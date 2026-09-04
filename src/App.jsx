@@ -1,31 +1,22 @@
-import { useState } from 'react'
-import './App.css'
-
-
+import { useState, useEffect } from "react";
+import FlashScreen from "./Components/FlashScreen.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-    const lenis = new Lenis();
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 1100);
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+  return () => clearTimeout(timer);
+}, []);
 
-    requestAnimationFrame(raf);
+  if (loading) {
+    return <FlashScreen />;
+  }
 
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <>
-      
-    </>
-  )
+  return <h1>My Portfolio</h1>;
 }
 
-export default App
+export default App;
