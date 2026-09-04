@@ -65,15 +65,16 @@ function FlashScreen() {
         {/* Loading Text */}
         <h2
           className="
-            text-xs
-            sm:text-sm
-            md:text-base
-            font-medium
-            text-[#454545]
-            text-center
+            text-sm
+            sm:text-base
+            md:text-lg
+            lg:text-xl
+            font-bold
+            text-[#a7a6a5]
+            tracking-tightest
           "
         >
-          LOADING EXPERIENCE...
+          LOADING &nbsp; EXPERIENCE...
         </h2>
 
       </div>
