@@ -41,7 +41,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full h-[8vh] min-h-15 bg-[#f6f5f3]/90 backdrop-blur-md">
+    <nav className="fixed top-0 left-0 z-50 w-full h-[8vh] min-h-15 bg-[#f6f2ec] backdrop-blur-md">
 
       <div className="h-full w-full flex items-center justify-between px-5 sm:px-8 md:px-10 lg:px-14">
 

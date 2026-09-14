@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import FlashScreen from "./Components/FlashScreen.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Hero from "./Components/Hero.jsx";
+import About from "./Components/About.jsx";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1100);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -20,17 +22,18 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="bg-[#F6F5F1]">
       <Navbar />
 
       <main className="pt-[8vh]">
         
         <section id="home" className="scroll-mt-[8vh] h-screen">
           <Hero />
+          <div className="h-[90%] w-[90%] bg-red"></div>
         </section>
 
         <section id="about" className="min-h-screen scroll-mt-[8vh]">
-          <h1>About</h1>
+          <About/>
         </section>
 
         <section id="skills" className="min-h-screen scroll-mt-[8vh]">
