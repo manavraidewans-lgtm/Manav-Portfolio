@@ -4,6 +4,7 @@ import FlashScreen from "./Components/FlashScreen.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Hero from "./Components/Hero.jsx";
 import About from "./Components/About.jsx";
+import Contact from "./Components/Contact.jsx";
 
 
 function App() {
@@ -24,28 +25,37 @@ function App() {
   return (
     <div className="bg-[#F6F5F1]">
       <Navbar />
-
+ 
       <main className="pt-[8vh]">
-        
+
+        {/* HERO */}
         <section id="home" className="scroll-mt-[8vh] h-screen">
           <Hero />
           <div className="h-[90%] w-[90%] bg-red"></div>
         </section>
 
+
+        {/* ABOUT */}
         <section id="about" className="min-h-screen scroll-mt-[8vh]">
           <About/>
         </section>
 
+
+        {/* SKILL */}
         <section id="skills" className="min-h-screen scroll-mt-[8vh]">
           <h1>Skills</h1>
         </section>
 
+
+        {/* PROJECTS */}
         <section id="projects" className="min-h-screen scroll-mt-[8vh]">
           <h1>Projects</h1>
         </section>
 
-        <section id="contact" className="min-h-screen scroll-mt-[8vh]">
-          <h1>Contact</h1>
+
+        {/* CONTACT */}
+        <section id="contact" className="min-h-screen  scroll-mt-[8vh]">
+          <Contact/>
         </section>
 
       </main>
