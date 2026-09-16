@@ -1,7 +1,10 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SkillCard from "./SkillCard";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function SkillsCards() {
 
@@ -9,20 +12,126 @@ function SkillsCards() {
 
     useEffect(() => {
 
-        gsap.fromTo(
-            cardsRef.current.children,
-            {
-                x: -80,
+        const cards = Array.from(cardsRef.current.children);
+
+        const directions = [
+            { x: -100, y: 0 },  // LEFT
+            { x: 100, y: 0 },   // RIGHT
+            { x: 0, y: 100 },   // BOTTOM
+            { x: 0, y: -100 },  // TOP
+        ];
+
+        const triggers = [];
+
+        cards.forEach((card, index) => {
+
+            const direction = directions[index % directions.length];
+
+            // Initial position
+            gsap.set(card, {
+                x: direction.x,
+                y: direction.y,
                 opacity: 0,
-            },
-            {
-                x: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-            }
-        );
+            });
+
+            const trigger = ScrollTrigger.create({
+
+                trigger: card,
+
+                
+
+                // =================================
+                // SCROLL DOWN → ENTER
+                // =================================
+                onEnter: () => {
+
+                    gsap.killTweensOf(card);
+
+                    gsap.fromTo(
+                        card,
+                        {
+                            x: direction.x,
+                            y: direction.y,
+                            opacity: 0,
+                        },
+                        {
+                            x: 0,
+                            y: 0,
+                            opacity: 1,
+                            duration: 1.5,
+                            ease: "power3.out",
+                        }
+                    );
+                },
+
+                // =================================
+                // SCROLL DOWN → EXIT
+                // =================================
+                onLeave: () => {
+
+                    gsap.killTweensOf(card);
+
+                    gsap.to(card, {
+                        x: direction.x,
+                        y: direction.y,
+                        opacity: 0,
+                        duration: 1.5,
+                        ease: "power3.in",
+                    });
+                },
+
+                // =================================
+                // SCROLL UP → ENTER
+                // =================================
+                onEnterBack: () => {
+
+                    gsap.killTweensOf(card);
+
+                    gsap.fromTo(
+                        card,
+                        {
+                            x: direction.x,
+                            y: direction.y,
+                            opacity: 0,
+                        },
+                        {
+                            x: 0,
+                            y: 0,
+                            opacity: 1,
+                            duration: 1.5,
+                            ease: "power3.out",
+                        }
+                    );
+                },
+
+                // =================================
+                // SCROLL UP → EXIT
+                // =================================
+                onLeaveBack: () => {
+
+                    gsap.killTweensOf(card);
+
+                    gsap.to(card, {
+                        x: direction.x,
+                        y: direction.y,
+                        opacity: 0,
+                        duration: 0.7,
+                        ease: "power3.in",
+                    });
+                },
+            });
+
+            triggers.push(trigger);
+        });
+
+        return () => {
+
+            triggers.forEach((trigger) => {
+                trigger.kill();
+            });
+
+            gsap.killTweensOf(cards);
+        };
 
     }, []);
 

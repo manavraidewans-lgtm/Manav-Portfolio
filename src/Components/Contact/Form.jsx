@@ -1,18 +1,105 @@
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function Form() {
+    const formRef = useRef(null);
+    const fieldsRef = useRef([]);
     const paths = useRef([]);
     const buttonRef = useRef(null);
 
     const [status, setStatus] = useState("idle");
 
     // -----------------------------
+    // FIELD SCROLL ANIMATIONS
+    // -----------------------------
+    useEffect(() => {
+        const fields = fieldsRef.current;
+
+        const triggers = [];
+
+        fields.forEach((field, index) => {
+            if (!field) return;
+
+            // Alternate directions
+            const enterX = index % 2 === 0 ? -100 : 100;
+            const exitX = index % 2 === 0 ? 100 : -100;
+
+            const trigger = ScrollTrigger.create({
+                trigger: field,
+                start: "top 90%",
+                end: "bottom 15%",
+
+                // Enter
+                onEnter: () => {
+                    gsap.fromTo(
+                        field,
+                        {
+                            x: enterX,
+                            opacity: 0,
+                        },
+                        {
+                            x: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            ease: "power3.out",
+                        }
+                    );
+                },
+
+                // Exit
+                onLeave: () => {
+                    gsap.to(field, {
+                        x: exitX,
+                        opacity: 0,
+                        duration: 0.6,
+                        ease: "power3.in",
+                    });
+                },
+
+                // Enter again
+                onEnterBack: () => {
+                    gsap.fromTo(
+                        field,
+                        {
+                            x: enterX,
+                            opacity: 0,
+                        },
+                        {
+                            x: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            ease: "power3.out",
+                        }
+                    );
+                },
+
+                // Exit upward
+                onLeaveBack: () => {
+                    gsap.to(field, {
+                        x: enterX,
+                        opacity: 0,
+                        duration: 0.6,
+                        ease: "power3.in",
+                    });
+                },
+            });
+
+            triggers.push(trigger);
+        });
+
+        return () => {
+            triggers.forEach((trigger) => trigger.kill());
+        };
+    }, []);
+
+    // -----------------------------
     // BORDER ANIMATION
     // -----------------------------
     const handleFocus = (index) => {
-        // Stop all other border animations
         paths.current.forEach((path, i) => {
             if (path && i !== index) {
                 gsap.killTweensOf(path);
@@ -28,7 +115,6 @@ function Form() {
 
         if (!path) return;
 
-        // Show active border
         gsap.killTweensOf(path);
 
         gsap.set(path, {
@@ -36,7 +122,6 @@ function Form() {
             strokeDashoffset: 0,
         });
 
-        // Animate only the active border
         gsap.to(path, {
             strokeDashoffset: -1000,
             duration: 2.5,
@@ -71,7 +156,6 @@ function Form() {
 
         const form = e.target;
 
-        // Check required fields
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
@@ -140,13 +224,16 @@ function Form() {
 
     return (
         <form
+            ref={formRef}
             onSubmit={handleSubmit}
             className="h-[45vh] w-[70%] md:h-[90%] flex flex-col gap-2.5 justify-center items-center md:gap-5"
         >
 
             {/* ================= NAME ================= */}
-            <div className="relative w-full">
-
+            <div
+                ref={(el) => (fieldsRef.current[0] = el)}
+                className="relative w-full"
+            >
                 <input
                     name="name"
                     type="text"
@@ -178,13 +265,13 @@ function Form() {
                         opacity="0"
                     />
                 </svg>
-
             </div>
 
-
             {/* ================= EMAIL ================= */}
-            <div className="relative w-full">
-
+            <div
+                ref={(el) => (fieldsRef.current[1] = el)}
+                className="relative w-full"
+            >
                 <input
                     name="email"
                     type="email"
@@ -216,13 +303,13 @@ function Form() {
                         opacity="0"
                     />
                 </svg>
-
             </div>
 
-
             {/* ================= PHONE ================= */}
-            <div className="relative w-full">
-
+            <div
+                ref={(el) => (fieldsRef.current[2] = el)}
+                className="relative w-full"
+            >
                 <input
                     name="phone"
                     type="tel"
@@ -254,13 +341,13 @@ function Form() {
                         opacity="0"
                     />
                 </svg>
-
             </div>
 
-
             {/* ================= MESSAGE ================= */}
-            <div className="relative w-full">
-
+            <div
+                ref={(el) => (fieldsRef.current[3] = el)}
+                className="relative w-full"
+            >
                 <textarea
                     name="message"
                     placeholder="Your Message"
@@ -291,13 +378,14 @@ function Form() {
                         opacity="0"
                     />
                 </svg>
-
             </div>
-
 
             {/* ================= BUTTON ================= */}
             <button
-                ref={buttonRef}
+                ref={(el) => {
+                    buttonRef.current = el;
+                    fieldsRef.current[4] = el;
+                }}
                 type="submit"
                 disabled={status !== "idle"}
                 className={`w-[80%] md:w-[50%] border border-[#a38671] rounded-xl p-2.5 md:p-3 flex justify-center items-center gap-2 transition-all duration-300 ${
@@ -306,11 +394,10 @@ function Form() {
                         : "hover:bg-[#a38671] hover:text-white"
                 }`}
             >
-
                 {status === "idle" && (
                     <>
                         Send Message
-                        <i class="ri-send-ins-line"></i>
+                        <i className="ri-send-ins-line"></i>
                     </>
                 )}
 
@@ -326,7 +413,6 @@ function Form() {
                         <i className="ri-check-line text-xl"></i>
                     </>
                 )}
-
             </button>
 
         </form>
