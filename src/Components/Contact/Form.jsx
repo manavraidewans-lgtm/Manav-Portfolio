@@ -310,6 +310,7 @@ function Form() {
                 {status === "idle" && (
                     <>
                         Send Message
+                        <i class="ri-send-ins-line"></i>
                     </>
                 )}
 

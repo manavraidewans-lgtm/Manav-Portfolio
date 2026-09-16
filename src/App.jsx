@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar.jsx";
 import Hero from "./Components/Hero.jsx";
 import About from "./Components/About.jsx";
 import Contact from "./Components/Contact.jsx";
+import Skills from "./Components/Skills.jsx";
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
 
         {/* SKILL */}
         <section id="skills" className="min-h-screen scroll-mt-[8vh]">
-          <h1>Skills</h1>
+          <Skills/>
         </section>
 
 
@@ -54,7 +55,7 @@ function App() {
 
 
         {/* CONTACT */}
-        <section id="contact" className="min-h-screen  scroll-mt-[8vh]">
+        <section id="contact" className="min-h-screen scroll-mt-[8vh]">
           <Contact/>
         </section>
 
