@@ -351,7 +351,7 @@ function ProjectStack() {
                                         "GSAP",
                                         "React Router"
                                     ]}
-                                    LiveLink={"ada"}
+                                    LiveLink={"https://manav-portfolio-neon.vercel.app/"}
                                     CodeLink={
                                         "https://github.com/manavraidewans-lgtm/Manav-Portfolio"
                                     }
