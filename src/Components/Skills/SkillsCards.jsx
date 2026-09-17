@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,34 +14,49 @@ function SkillsCards() {
         const cards = Array.from(cardsRef.current.children);
 
         const directions = [
-            { x: -100, y: 0 },  // LEFT
-            { x: 100, y: 0 },   // RIGHT
-            { x: 0, y: 100 },   // BOTTOM
-            { x: 0, y: -100 },  // TOP
+            { x: -100, y: 0 },  // Card 1 → LEFT
+            { x: 100, y: 0 },   // Card 2 → RIGHT
+            { x: 0, y: 100 },   // Card 3 → BOTTOM
+            { x: 0, y: -100 },  // Card 4 → TOP
         ];
 
         const triggers = [];
 
         cards.forEach((card, index) => {
 
-            const direction = directions[index % directions.length];
+            const direction =
+                directions[index % directions.length];
 
-            // Initial position
+
+            // =====================================
+            // INITIAL POSITION
+            // =====================================
+
             gsap.set(card, {
                 x: direction.x,
                 y: direction.y,
                 opacity: 0,
             });
 
+
+            // =====================================
+            // SCROLL TRIGGER
+            // =====================================
+
             const trigger = ScrollTrigger.create({
 
                 trigger: card,
 
-                
+                // This is required for onLeave
+                // and onLeaveBack to fire.
+                end: "bottom top",
+
 
                 // =================================
                 // SCROLL DOWN → ENTER
+                // direction → CENTER
                 // =================================
+
                 onEnter: () => {
 
                     gsap.killTweensOf(card);
@@ -62,27 +76,35 @@ function SkillsCards() {
                             ease: "power3.out",
                         }
                     );
+
                 },
+
 
                 // =================================
                 // SCROLL DOWN → EXIT
+                // CENTER → OPPOSITE DIRECTION
                 // =================================
+
                 onLeave: () => {
 
                     gsap.killTweensOf(card);
 
                     gsap.to(card, {
-                        x: direction.x,
-                        y: direction.y,
+                        x: direction.x * -1,
+                        y: direction.y * -1,
                         opacity: 0,
-                        duration: 1.5,
+                        duration: 0.7,
                         ease: "power3.in",
                     });
+
                 },
+
 
                 // =================================
                 // SCROLL UP → ENTER
+                // direction → CENTER
                 // =================================
+
                 onEnterBack: () => {
 
                     gsap.killTweensOf(card);
@@ -102,11 +124,15 @@ function SkillsCards() {
                             ease: "power3.out",
                         }
                     );
+
                 },
+
 
                 // =================================
                 // SCROLL UP → EXIT
+                // CENTER → SAME DIRECTION
                 // =================================
+
                 onLeaveBack: () => {
 
                     gsap.killTweensOf(card);
@@ -118,11 +144,18 @@ function SkillsCards() {
                         duration: 0.7,
                         ease: "power3.in",
                     });
+
                 },
+
             });
 
             triggers.push(trigger);
         });
+
+
+        // =====================================
+        // CLEANUP
+        // =====================================
 
         return () => {
 
@@ -130,15 +163,30 @@ function SkillsCards() {
                 trigger.kill();
             });
 
-            gsap.killTweensOf(cards);
+            cards.forEach((card) => {
+                gsap.killTweensOf(card);
+            });
+
         };
 
     }, []);
 
+
     return (
         <div
             ref={cardsRef}
-            className="w-full flex flex-wrap justify-evenly items-start gap-3 p-2 sm:gap-4 md:gap-5 lg:gap-6"
+            className="
+                w-full
+                flex
+                flex-wrap
+                justify-evenly
+                items-start
+                gap-3
+                p-2
+                sm:gap-4
+                md:gap-5
+                lg:gap-6
+            "
         >
 
             <SkillCard
@@ -206,4 +254,3 @@ function SkillsCards() {
 }
 
 export default SkillsCards;
-

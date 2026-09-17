@@ -5,8 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function SkillsTittle({ Tittle }) {
-
+function ProjectTittle({ Tittle }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
@@ -73,7 +72,6 @@ function SkillsTittle({ Tittle }) {
         };
     }, []);
 
-
     return (
         <h1
             ref={titleRef}
@@ -84,5 +82,5 @@ function SkillsTittle({ Tittle }) {
     );
 }
 
-export default SkillsTittle;
+export default ProjectTittle;
 

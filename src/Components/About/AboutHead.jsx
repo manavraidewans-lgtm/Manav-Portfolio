@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,28 +13,59 @@ function AboutHead({ Head }) {
         const animation = gsap.fromTo(
             headRef.current,
             {
-                x: -80,
+                x: -100,
                 opacity: 0,
             },
             {
                 x: 0,
                 opacity: 1,
-                duration: 3,
+                duration: 1.5,
                 ease: "power3.out",
-                scrollTrigger: {
-                    trigger: headRef.current,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                },
+                paused: true,
             }
         );
 
+        const trigger = ScrollTrigger.create({
+            trigger: headRef.current,
+
+            // Your content viewport is around 91vh
+            start: "top 85%",
+            end: "bottom 10%",
+
+            onEnter: () => {
+                animation.restart();
+            },
+
+            onLeave: () => {
+                gsap.to(headRef.current, {
+                    x: 100,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power3.in",
+                });
+            },
+
+            onEnterBack: () => {
+                animation.restart();
+            },
+
+            onLeaveBack: () => {
+                gsap.to(headRef.current, {
+                    x: -100,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.in",
+                });
+            },
+        });
+
         return () => {
-            animation.scrollTrigger?.kill();
+            trigger.kill();
             animation.kill();
         };
 
     }, []);
+
 
     return (
         <h1
@@ -48,4 +78,3 @@ function AboutHead({ Head }) {
 }
 
 export default AboutHead;
-

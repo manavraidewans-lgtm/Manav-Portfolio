@@ -5,62 +5,65 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function SkillsTittle({ Tittle }) {
-
-    const titleRef = useRef(null);
+function ProjectHead({ Head }) {
+   const headRef = useRef(null);
 
     useEffect(() => {
-        const element = titleRef.current;
+        const element = headRef.current;
 
         const trigger = ScrollTrigger.create({
             trigger: element,
             start: "top 85%",
             end: "bottom 15%",
 
+            // Enter: Right → Center
             onEnter: () => {
                 gsap.fromTo(
                     element,
                     {
-                        x: -100,
+                        x: 100,
                         opacity: 0,
                     },
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 2,
+                        duration: 1.5,
                         ease: "power3.out",
                     }
                 );
             },
 
+            // Exit: Center → Left
             onLeave: () => {
                 gsap.to(element, {
-                    x: 100,
+                    x: -100,
                     opacity: 0,
-                    duration: 0.5,
+                    duration: 0.6,
                     ease: "power3.in",
                 });
             },
 
+            // Coming back: Right → Center
             onEnterBack: () => {
                 gsap.fromTo(
                     element,
                     {
-                        x: -100,
+                        x: 100,
                         opacity: 0,
                     },
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 1,
+                        duration: 1.5,
                         ease: "power3.out",
                     }
                 );
             },
 
+            // Leaving upward: Center → Right
             onLeaveBack: () => {
                 gsap.to(element, {
-                    x: -100,
+                    x: 100,
                     opacity: 0,
                     duration: 0.6,
                     ease: "power3.in",
@@ -76,13 +79,12 @@ function SkillsTittle({ Tittle }) {
 
     return (
         <h1
-            ref={titleRef}
-            className="text-[#4b4d4d] text-4xl md:text-6xl font-medium"
+            ref={headRef}
+            className="text-[#a29a93] font-bold font-['Inter'] text-sm md:text-xl"
         >
-            {Tittle}
+            {Head.toUpperCase()}
         </h1>
     );
 }
 
-export default SkillsTittle;
-
+export default ProjectHead;

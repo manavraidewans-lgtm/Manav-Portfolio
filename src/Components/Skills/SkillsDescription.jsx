@@ -10,35 +10,17 @@ function SkillsDescirption({ Des }) {
     const descriptionRef = useRef(null);
 
     useEffect(() => {
-
-        const description = descriptionRef.current;
-
-        // Start hidden on the RIGHT
-        gsap.set(description, {
-            x: 100,
-            opacity: 0,
-        });
+        const element = descriptionRef.current;
 
         const trigger = ScrollTrigger.create({
-
-            trigger: description,
-
-            // Visible area starts below navbar
+            trigger: element,
             start: "top 85%",
+            end: "bottom 15%",
 
-            // Visible area ends before navbar
-            end: "bottom 8vh",
-
-            // =========================
-            // SCROLL DOWN → ENTER
-            // RIGHT → CENTER
-            // =========================
+            // Enter: Right → Center
             onEnter: () => {
-
-                gsap.killTweensOf(description);
-
                 gsap.fromTo(
-                    description,
+                    element,
                     {
                         x: 100,
                         opacity: 0,
@@ -46,38 +28,26 @@ function SkillsDescirption({ Des }) {
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 0.9,
+                        duration: 0.8,
                         ease: "power3.out",
                     }
                 );
             },
 
-            // =========================
-            // SCROLL DOWN → EXIT
-            // CENTER → RIGHT
-            // =========================
+            // Exit: Center → Left
             onLeave: () => {
-
-                gsap.killTweensOf(description);
-
-                gsap.to(description, {
-                    x: 100,
+                gsap.to(element, {
+                    x: -100,
                     opacity: 0,
-                    duration: 0.8,
+                    duration: 0.6,
                     ease: "power3.in",
                 });
             },
 
-            // =========================
-            // SCROLL UP → ENTER
-            // RIGHT → CENTER
-            // =========================
+            // Coming back: Right → Center
             onEnterBack: () => {
-
-                gsap.killTweensOf(description);
-
                 gsap.fromTo(
-                    description,
+                    element,
                     {
                         x: 100,
                         opacity: 0,
@@ -85,24 +55,18 @@ function SkillsDescirption({ Des }) {
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 0.9,
+                        duration: 0.8,
                         ease: "power3.out",
                     }
                 );
             },
 
-            // =========================
-            // SCROLL UP → EXIT
-            // CENTER → RIGHT
-            // =========================
+            // Leaving upward: Center → Right
             onLeaveBack: () => {
-
-                gsap.killTweensOf(description);
-
-                gsap.to(description, {
+                gsap.to(element, {
                     x: 100,
                     opacity: 0,
-                    duration: 0.8,
+                    duration: 0.6,
                     ease: "power3.in",
                 });
             },
@@ -110,9 +74,7 @@ function SkillsDescirption({ Des }) {
 
         return () => {
             trigger.kill();
-            gsap.killTweensOf(description);
         };
-
     }, []);
 
     return (

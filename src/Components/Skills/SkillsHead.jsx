@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,54 +9,63 @@ function SkillsHead({ Head }) {
     const headRef = useRef(null);
 
     useEffect(() => {
-
-        const animation = gsap.fromTo(
-            headRef.current,
-            {
-                x: -80,
-                opacity: 0,
-            },
-            {
-                x: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-                paused: true,
-            }
-        );
+        const element = headRef.current;
 
         const trigger = ScrollTrigger.create({
-            trigger: headRef.current,
-
-            // Navbar is 8vh, so start below it
+            trigger: element,
             start: "top 85%",
-            end: "bottom 8vh",
+            end: "bottom 15%",
 
+            // Enter: Right → Center
             onEnter: () => {
-                animation.restart();
+                gsap.fromTo(
+                    element,
+                    {
+                        x: 100,
+                        opacity: 0,
+                    },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 1.5,
+                        ease: "power3.out",
+                    }
+                );
             },
 
-            // Scrolling down → center to RIGHT
+            // Exit: Center → Left
             onLeave: () => {
-                gsap.to(headRef.current, {
-                    x: 80,
+                gsap.to(element, {
+                    x: -100,
                     opacity: 0,
-                    duration: 0.7,
+                    duration: 0.6,
                     ease: "power3.in",
                 });
             },
 
-            // Coming back → LEFT to center
+            // Coming back: Right → Center
             onEnterBack: () => {
-                animation.restart();
+                gsap.fromTo(
+                    element,
+                    {
+                        x: 100,
+                        opacity: 0,
+                    },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 1.5,
+                        ease: "power3.out",
+                    }
+                );
             },
 
-            // Scrolling up → center to LEFT
+            // Leaving upward: Center → Right
             onLeaveBack: () => {
-                gsap.to(headRef.current, {
-                    x: -80,
+                gsap.to(element, {
+                    x: 100,
                     opacity: 0,
-                    duration: 0.7,
+                    duration: 0.6,
                     ease: "power3.in",
                 });
             },
@@ -65,9 +73,7 @@ function SkillsHead({ Head }) {
 
         return () => {
             trigger.kill();
-            animation.kill();
         };
-
     }, []);
 
     return (
@@ -81,4 +87,3 @@ function SkillsHead({ Head }) {
 }
 
 export default SkillsHead;
-
